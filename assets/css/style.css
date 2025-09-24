@@ -9,3 +9,67 @@
 a {
     text-decoration: none;
 }
+
+.container {
+    position: relative;
+    width: 800px;
+    height: auto;
+    margin: 180px auto;
+}
+
+ul {
+    position: relative;
+    width: 100%;
+    border-top: 3px solid #348dff;
+}
+
+ul li {
+    display: inline;
+}
+
+ul li a {
+    display: inline-block;
+    width: 19.4%;
+    height: 50px;
+    line-height: 55px;
+    text-align: center;
+}
+
+ul li a i {
+    color: #348dff;
+    font-size: 30px;
+}
+
+ul li a.active {
+    background: #348dff;
+}
+
+ul li a.active i {
+    color: #fff;
+}
+
+ul li .box {
+    position: absolute;
+    top: 100%;
+    padding: 20px;
+    display: none;
+    background: #348dff;
+}
+
+ul li .box.active {
+    display: block;
+}
+
+ul li .box h1 {
+    padding: 0 0 15px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #fff;
+    font-weight: 400;
+    border-bottom: 2px solid #fff;
+}
+
+ul li .box p {
+    text-align: justify;
+    color: #fff;
+}
