@@ -1,0 +1,64 @@
+A next-gen UI layer powered by smooth motion, light distortion and reactive geometry.
+
+Motion that adapts to user intent, speed and interaction context.
+
+Dynamic glow, particles, and pulse effects synced with UI state.
+
+
+
+
+    vertexShader: `
+        void main() {
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+        uniform float uTime;
+        uniform float uIntensity;
+        uniform vec2 uResolution;
+        uniform float uPhase;
+
+        float rand(vec2 p) {
+            return fract(sin(dot(p, vec2(12.9898,78.233))) * 43758.5453);
+        }
+
+        float noise(vec2 p) {
+            vec2 i = floor(p);
+            vec2 f = fract(p);
+
+            float a = rand(i);
+            float b = rand(i + vec2(1.0, 0.0));
+            float c = rand(i + vec2(0.0, 1.0));
+            float d = rand(i + vec2(1.0, 1.0));
+
+            vec2 u = f * f * (3.0 - 2.0 * f);
+            return mix(a, b, u.x) +
+                   (c - a) * u.y * (1.0 - u.x) +
+                   (d - b) * u.x * u.y;
+        }
+
+        void main() {
+            vec2 uv = gl_FragCoord.xy / uResolution.xy;
+
+            float t = uTime * 0.4 + uPhase;
+
+            float n1 = noise(uv * 6.0 + t);
+            float n2 = noise(uv * 12.0 - t);
+
+            float intensity = clamp(uIntensity, 0.0, 4.0);
+            float distortion = (n1 + n2) * 0.5 * intensity;
+
+            uv += distortion * vec2(
+                sin(t + uv.y * 8.0),
+                cos(t + uv.x * 8.0)
+            ) * 0.015;
+
+            float glow = smoothstep(0.3, 1.0, distortion);
+            glow *= 0.75;
+
+            gl_FragColor = vec4(
+                vec3(0.0, 0.55, 0.7),
+                glow * 0.18
+            );
+        }
+    `,
